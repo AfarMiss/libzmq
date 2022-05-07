@@ -2,7 +2,6 @@ syntax: glob # for hg-git users
 
 # Generated build scripts and IDE generating files
 ## autotools
-!/build/CMakeCache.txt
 /Makefile
 builds/Makefile
 builds/deprecated-msvc/Makefile
@@ -22,7 +21,9 @@ configure
 stamp-h1
 ## CMake
 cmake-build-debug/
-build/
+!/build
+/build/*
+!/build/CMakeCache.txt
 ## Android
 builds/android/prefix
 ## IntelliJ
