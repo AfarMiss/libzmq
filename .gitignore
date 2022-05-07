@@ -21,9 +21,7 @@ configure
 stamp-h1
 ## CMake
 cmake-build-debug/
-!/build
-/build/*
-!/build/CMakeCache.txt
+build/
 ## Android
 builds/android/prefix
 ## IntelliJ
