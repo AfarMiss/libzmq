@@ -1,8 +1,8 @@
-!/build/CMakeCache.txt
 syntax: glob # for hg-git users
 
 # Generated build scripts and IDE generating files
 ## autotools
+!/build/CMakeCache.txt
 /Makefile
 builds/Makefile
 builds/deprecated-msvc/Makefile
