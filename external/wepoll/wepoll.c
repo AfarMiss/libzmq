@@ -1551,8 +1551,11 @@ static void reflock__await_event(void* address) {
     abort();
 }
 
+
 void reflock_ref(reflock_t* reflock) {
-  long state = InterlockedAdd(&reflock->state, REFLOCK__REF);
+    long state =
+      InterlockedExchangeAdd (&reflock->state, REFLOCK__REF) + (REFLOCK__REF);
+    printf ("%lu\n", state);
 
   /* Verify that the counter didn't overflow and the lock isn't destroyed. */
   assert((state & REFLOCK__DESTROY_MASK) == 0);
@@ -1560,7 +1563,8 @@ void reflock_ref(reflock_t* reflock) {
 }
 
 void reflock_unref(reflock_t* reflock) {
-  long state = InterlockedAdd(&reflock->state, -REFLOCK__REF);
+    long state =
+      InterlockedExchangeAdd(&reflock->state, -REFLOCK__REF) + (-REFLOCK__REF);
 
   /* Verify that the lock was referenced and not already destroyed. */
   assert((state & REFLOCK__DESTROY_MASK & ~REFLOCK__DESTROY) == 0);
@@ -1571,7 +1575,8 @@ void reflock_unref(reflock_t* reflock) {
 
 void reflock_unref_and_destroy(reflock_t* reflock) {
   long state =
-      InterlockedAdd(&reflock->state, REFLOCK__DESTROY - REFLOCK__REF);
+      InterlockedExchangeAdd (&reflock->state, REFLOCK__DESTROY - REFLOCK__REF)
+      + (REFLOCK__DESTROY - REFLOCK__REF);
   long ref_count = state & REFLOCK__REF_MASK;
 
   /* Verify that the lock was referenced and not already destroyed. */
